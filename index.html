@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Flowers Day, My Love!! 🌷</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0c1518;
+  --gold: #c9a84c;
+  --cream: #f5f0e8;
+  --blush: #e8b4bc;
+  --muted: rgba(245,240,232,0.45);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--cream);
+  font-family: 'Cormorant Garamond', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 25%, rgba(61,107,90,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 75%, rgba(201,168,76,0.1) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(232,180,188,0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes lilyFloat {
+  0%,100% { transform: translateY(0px) rotate(0deg); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
+}
+@keyframes lilyReveal {
+  from { opacity: 0; transform: scale(0.85) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+@keyframes sway {
+  0%,100% { transform: rotate(-2.5deg); }
+  50%     { transform: rotate(2.5deg);  }
+}
+@keyframes petalFall {
+  0%   { transform: translateY(-60px) translateX(0)           rotate(0deg);   opacity: 1;   }
+  100% { transform: translateY(110vh) translateX(var(--drift)) rotate(720deg); opacity: 0;   }
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.35); }
+  50%     { box-shadow: 0 0 0 8px rgba(201,168,76,0);  }
+}
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes photoReveal {
+  from { opacity: 0; transform: scale(0.88) translateY(18px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+/* ── Layout ───────────────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  z-index: 1;
+}
+
+.bg-lilies {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Typography ───────────────────────────────── */
+.eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.62rem, 1.8vw, 0.78rem);
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.8rem;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.4s forwards;
+}
+
+.title {
+  font-size: clamp(3.5rem, 11vw, 7.5rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+  opacity: 0;
+  animation: fadeUp 1s ease 0.7s forwards;
+}
+.title em {
+  font-style: italic;
+  color: var(--blush);
+}
+
+.divider {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  margin: 2rem auto;
+  opacity: 0;
+  animation: fadeUp 1s ease 1s forwards;
+}
+
+/* ── Central lily ─────────────────────────────── */
+.central-lily {
+  margin: 0 auto 0.5rem;
+  opacity: 0;
+  animation: fadeUp 1s ease 1s forwards;
+}
+.petal-group {
+  animation: sway 5s ease-in-out infinite;
+  transform-origin: 0 0;
+}
+
+/* ── Message card ─────────────────────────────── */
+.message-card {
+  position: relative;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.22);
+  padding: 2.8rem 3.2rem;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto 0.5rem;
+  opacity: 0;
+  animation: fadeUp 1s ease 1.3s forwards;
+}
+.message-card::before,
+.message-card::after {
+  content: '✦';
+  position: absolute;
+  color: var(--gold);
+  font-size: 0.75rem;
+  background: var(--bg);
+  padding: 0 0.5rem;
+}
+.message-card::before { top: -0.55rem; left: 50%; transform: translateX(-50%); }
+.message-card::after  { bottom: -0.55rem; left: 50%; transform: translateX(-50%); }
+
+.message-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  opacity: 0.75;
+}
+
+.message-text {
+  font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 2;
+  color: var(--muted);
+}
+
+/* ── Signature ────────────────────────────────── */
+.signature {
+  display: block;
+  text-align: right;
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  font-weight: 300;
+  margin-top: 1.4rem;
+  color: var(--gold);
+  opacity: 0.85;
+  letter-spacing: 0.04em;
+}
+
+/* ── Petal button ─────────────────────────────── */
+.petal-btn {
+  margin-top: 2.8rem;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 1.1rem 2.8rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.45s;
+  opacity: 0;
+  animation: fadeUp 1s ease 1.6s forwards, pulse 3s ease 2.6s infinite;
+}
+.petal-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s ease;
+  z-index: -1;
+}
+.petal-btn:hover { color: var(--bg); }
+.petal-btn:hover::before { transform: scaleX(1); }
+
+/* ── Falling petals ───────────────────────────── */
+.petal {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  border-radius: 50% 10% 50% 10%;
+  animation: petalFall var(--dur) ease-in forwards;
+}
+
+/* ── Photo overlay ────────────────────────────── */
+.photo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 21, 24, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.55s ease;
+}
+.photo-overlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.photo-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  opacity: 0;
+  transform: scale(0.88) translateY(18px);
+  transition: opacity 0.55s ease 0.15s, transform 0.55s ease 0.15s;
+}
+.photo-overlay.visible .photo-frame {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.photo-frame img {
+  width: min(320px, 78vw);
+  height: min(380px, 78vw);
+  object-fit: cover;
+  border: 1px solid rgba(201,168,76,0.35);
+  display: block;
+  /* decorative corner glow */
+  box-shadow:
+    0 0 0 1px rgba(201,168,76,0.1),
+    0 12px 48px rgba(0,0,0,0.55),
+    inset 0 0 30px rgba(201,168,76,0.04);
+}
+
+.photo-caption {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.32em;
+  color: var(--gold);
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* corner ornaments */
+.photo-frame::before,
+.photo-frame::after {
+  content: '✦';
+  position: absolute;
+  color: var(--gold);
+  font-size: 0.7rem;
+  opacity: 0.6;
+}
+.photo-frame::before { top: -1.4rem; left: 50%; transform: translateX(-50%); }
+.photo-frame::after  { bottom: 2.8rem; left: 50%; transform: translateX(-50%); }
+
+.close-btn {
+  position: absolute;
+  top: 1.4rem;
+  right: 1.6rem;
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.3);
+  color: rgba(245,240,232,0.5);
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: color 0.3s, border-color 0.3s;
+}
+.close-btn:hover {
+  color: var(--gold);
+  border-color: rgba(201,168,76,0.7);
+}
+
+/* ── Footer ───────────────────────────────────── */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 1.5rem 2rem 2.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: rgba(245,240,232,0.2);
+  text-transform: uppercase;
+}
+
+@media (max-width: 500px) {
+  .message-card { padding: 2rem 1.6rem; }
+}
+  </style>
+</head>
+<body>
+
+<div class="bg-lilies" id="bgLilies"></div>
+
+<!-- Photo overlay -->
+<div class="photo-overlay" id="photoOverlay">
+  <button class="close-btn" onclick="closeOverlay()">✦ close</button>
+  <div class="photo-frame">
+    <img src=image.png alt="Me" id="photoImg" />
+    <span class="photo-caption">With all my love</span>
+  </div>
+</div>
+
+<div class="hero">
+  <p class="eyebrow">&nbsp;·&nbsp; Happy National Flowers Day,</p>
+
+  <h1 class="title">My <em>Baby!</em></h1>
+
+  <div class="divider"></div>
+
+  <div class="central-lily">
+    <svg width="130" height="130" viewBox="-65 -65 130 130" xmlns="http://www.w3.org/2000/svg">
+      <g class="petal-group">
+        <path d="M0,0 C-11,-14,-9,-46,0,-58 C9,-46,11,-14,0,0" fill="#f5f0e8" opacity="0.92" transform="rotate(0)"/>
+        <path d="M0,0 C-11,-14,-9,-46,0,-58 C9,-46,11,-14,0,0" fill="#f5f0e8" opacity="0.92" transform="rotate(60)"/>
+        <path d="M0,0 C-11,-14,-9,-46,0,-58 C9,-46,11,-14,0,0" fill="#f5f0e8" opacity="0.92" transform="rotate(120)"/>
+        <path d="M0,0 C-11,-14,-9,-46,0,-58 C9,-46,11,-14,0,0" fill="#f5f0e8" opacity="0.92" transform="rotate(180)"/>
+        <path d="M0,0 C-11,-14,-9,-46,0,-58 C9,-46,11,-14,0,0" fill="#f5f0e8" opacity="0.92" transform="rotate(240)"/>
+        <path d="M0,0 C-11,-14,-9,-46,0,-58 C9,-46,11,-14,0,0" fill="#f5f0e8" opacity="0.92" transform="rotate(300)"/>
+        <line x1="0" y1="-4" x2="0" y2="-52" stroke="#e8b4bc" stroke-width="0.9" opacity="0.45" transform="rotate(0)"/>
+        <line x1="0" y1="-4" x2="0" y2="-52" stroke="#e8b4bc" stroke-width="0.9" opacity="0.45" transform="rotate(60)"/>
+        <line x1="0" y1="-4" x2="0" y2="-52" stroke="#e8b4bc" stroke-width="0.9" opacity="0.45" transform="rotate(120)"/>
+        <line x1="0" y1="-4" x2="0" y2="-52" stroke="#e8b4bc" stroke-width="0.9" opacity="0.45" transform="rotate(180)"/>
+        <line x1="0" y1="-4" x2="0" y2="-52" stroke="#e8b4bc" stroke-width="0.9" opacity="0.45" transform="rotate(240)"/>
+        <line x1="0" y1="-4" x2="0" y2="-52" stroke="#e8b4bc" stroke-width="0.9" opacity="0.45" transform="rotate(300)"/>
+      </g>
+      <g>
+        <line x1="0" y1="0" x2="0" y2="-32"   stroke="#c9a84c" stroke-width="1.3" transform="rotate(0)"/>
+        <circle cx="0" cy="-32" r="2.8"         fill="#c9a84c"   transform="rotate(0)"/>
+        <line x1="0" y1="0" x2="0" y2="-32"   stroke="#c9a84c" stroke-width="1.3" transform="rotate(51.4)"/>
+        <circle cx="0" cy="-32" r="2.8"         fill="#c9a84c"   transform="rotate(51.4)"/>
+        <line x1="0" y1="0" x2="0" y2="-32"   stroke="#c9a84c" stroke-width="1.3" transform="rotate(102.8)"/>
+        <circle cx="0" cy="-32" r="2.8"         fill="#c9a84c"   transform="rotate(102.8)"/>
+        <line x1="0" y1="0" x2="0" y2="-32"   stroke="#c9a84c" stroke-width="1.3" transform="rotate(154.2)"/>
+        <circle cx="0" cy="-32" r="2.8"         fill="#c9a84c"   transform="rotate(154.2)"/>
+        <line x1="0" y1="0" x2="0" y2="-32"   stroke="#c9a84c" stroke-width="1.3" transform="rotate(205.7)"/>
+        <circle cx="0" cy="-32" r="2.8"         fill="#c9a84c"   transform="rotate(205.7)"/>
+        <line x1="0" y1="0" x2="0" y2="-32"   stroke="#c9a84c" stroke-width="1.3" transform="rotate(257.1)"/>
+        <circle cx="0" cy="-32" r="2.8"         fill="#c9a84c"   transform="rotate(257.1)"/>
+      </g>
+      <circle cx="0" cy="0" r="5.5" fill="#c9a84c" opacity="0.85"/>
+    </svg>
+  </div>
+
+  <div class="message-card">
+    <p class="message-label">For my princess,</p>
+    <p class="message-text">
+      ✦ &nbsp;I know I've not been a good boyfriend to you and since I can't give you any flowers, this is the least I can do, and it's lily themed!!&nbsp; ✦
+      <br><br>
+      <em>I promise I'll be more attentive and an active listener. You do so much for me and you've always been the best partner I could ask for. I will always love you and be proud of you. You've been working so hard and I'm sure from now on, things will be positive. I promise.</em>
+      <em>I love you so much and I hope I can make you happy.</em>
+      <br>
+      <span class="signature">— Husband</span>
+    </p>
+  </div>
+
+  <button class="petal-btn" onclick="openOverlay()">✦ &nbsp;Open&nbsp; ✦</button>
+
+</div>
+
+<script>
+  /* ── Background decorative lilies ─────────────── */
+  const bgPositions = [
+    { top:'4%',   left:'2%',   size:90,  rot:-25,  delay:0.2, float:5.5 },
+    { top:'4%',   right:'2%',  size:90,  rot:25,   delay:0.4, float:6   },
+    { bottom:'4%',left:'2%',   size:80,  rot:-155, delay:0.6, float:5   },
+    { bottom:'4%',right:'2%',  size:80,  rot:155,  delay:0.8, float:6.5 },
+    { top:'42%',  left:'0.5%', size:60,  rot:-90,  delay:1.0, float:7   },
+    { top:'42%',  right:'0.5%',size:60,  rot:90,   delay:1.2, float:5.8 },
+    { top:'22%',  left:'6%',   size:45,  rot:-45,  delay:1.4, float:6.2 },
+    { top:'22%',  right:'6%',  size:45,  rot:45,   delay:1.6, float:5.3 },
+    { bottom:'22%',left:'6%',  size:45,  rot:-135, delay:1.8, float:7.1 },
+    { bottom:'22%',right:'6%', size:45,  rot:135,  delay:2.0, float:5.9 },
+  ];
+
+  const container = document.getElementById('bgLilies');
+
+  bgPositions.forEach((p, i) => {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = `
+      position:absolute;
+      opacity:0;
+      animation: lilyReveal 2s ease ${p.delay}s forwards;
+      ${p.top    ? 'top:'    + p.top    + ';' : ''}
+      ${p.bottom ? 'bottom:' + p.bottom + ';' : ''}
+      ${p.left   ? 'left:'   + p.left   + ';' : ''}
+      ${p.right  ? 'right:'  + p.right  + ';' : ''}
+    `;
+
+    const petals = [0,60,120,180,240,300]
+      .map(r => `<path d="M0,0 C-9,-12,-7,-38,0,-47 C7,-38,9,-12,0,0" fill="#f5f0e8" transform="rotate(${r})"/>`)
+      .join('');
+
+    wrap.innerHTML = `
+      <svg width="${p.size}" height="${p.size}" viewBox="-55 -55 110 110"
+           xmlns="http://www.w3.org/2000/svg"
+           style="transform:rotate(${p.rot}deg);
+                  animation:lilyFloat ${p.float}s ease-in-out ${i * 0.35}s infinite;
+                  opacity:0.18;">
+        ${petals}
+        <circle cx="0" cy="0" r="4" fill="#c9a84c" opacity="0.5"/>
+      </svg>`;
+    container.appendChild(wrap);
+  });
+
+  /* ── Petal rain (continuous while overlay is open) ── */
+  let petalInterval = null;
+
+  function spawnPetal() {
+    const palette = ['#f5f0e8','#e8b4bc','#f0d8dc','#d4b896','#c9a84c'];
+    const el    = document.createElement('div');
+    el.classList.add('petal');
+    const x     = Math.random() * window.innerWidth;
+    const drift = (Math.random() - 0.5) * 260;
+    const dur   = (3 + Math.random() * 3.5).toFixed(2);
+    const size  = (7 + Math.random() * 13).toFixed(1);
+    const color = palette[Math.floor(Math.random() * palette.length)];
+    el.style.cssText = `
+      left:${x}px; top:-20px;
+      width:${size}px; height:${parseFloat(size)*1.65}px;
+      background:${color};
+      --drift:${drift}px; --dur:${dur}s;
+      opacity:0.82;
+      filter:blur(${(Math.random()*0.6).toFixed(2)}px);
+      z-index: 1001;
+    `;
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+
+  function openOverlay() {
+    const overlay = document.getElementById('photoOverlay');
+    overlay.classList.add('visible');
+    // Start continuous petal rain
+    spawnPetal();
+    petalInterval = setInterval(spawnPetal, 200);
+  }
+
+  function closeOverlay() {
+    const overlay = document.getElementById('photoOverlay');
+    overlay.classList.remove('visible');
+    // Stop petal rain
+    if (petalInterval) {
+      clearInterval(petalInterval);
+      petalInterval = null;
+    }
+  }
+
+  // Close on backdrop click
+  document.getElementById('photoOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeOverlay();
+  });
+</script>
+
+</body>
+</html>
